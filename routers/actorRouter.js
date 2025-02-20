@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const data = require("../data.js");
+const errorHandling = require("../middlewares/errorHandling.js");
 
 // GET /actor
 router.get("/", (req, res) => {
@@ -23,13 +24,25 @@ router.get("/:id", (req, res) => {
 
 // CREATE - POST /actor
 let nextId = 4;
-router.post("/", (req, res) => {
-  console.log("req.body: ", req.body); // POST, PUT, DELETE işlemleri için kullanılır.
+router.post("/", (req, res, next) => {
   let newActor = req.body;
-  newActor.id = nextId;
-  nextId++;
-  data.push(newActor);
-  res.status(201).json(newActor);
+
+  if (!newActor.name) {
+    next({
+      statusCode: 400,
+      errorMessage: "Actor name is required",
+    });
+  } else if (newActor.name && !newActor.films) {
+    next({
+      statusCode: 400,
+      errorMessage: "A film is required",
+    });
+  } else {
+    newActor.id = nextId;
+    nextId++;
+    data.push(newActor);
+    res.status(201).json(newActor);
+  }
 });
 
 //UPDATE - PUT /actor/1

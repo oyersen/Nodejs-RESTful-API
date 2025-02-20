@@ -18,4 +18,13 @@ module.exports = [
       "Saving Private Ryan, The Green Mile, Apollo 13",
     ],
   },
+  {
+    id: 4,
+    name: "Tom Hanks",
+    films: [
+      "Forrest Gump",
+      "Cast Away",
+      "Saving Private Ryan, The Green Mile, Apollo 13",
+    ],
+  },
 ];
